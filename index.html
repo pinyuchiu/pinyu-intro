@@ -265,20 +265,25 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
 /* ===== TAVERN ===== */
 #s-tavern{background:#2a1a12}
 #tvBg{position:absolute;inset:0}
-#tvBox{position:absolute;left:290px;top:120px;width:700px;padding:28px 36px;text-align:center}
+#tvBox{position:absolute;left:250px;top:84px;width:780px;padding:28px 36px;text-align:center}
 #tvBox .new{font-family:var(--en);font-size:16px;color:var(--gold);animation:blink 1s steps(2) infinite}
 #tvBox .who{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:18px}
 #tvBox .who .nm{text-align:left}
 #tvBox .who .nm b{font-size:40px;font-weight:900;display:block}
 #tvBox .who .nm span{font-size:21px;font-weight:900;color:var(--gold)}
 #tvBox .who .nm small{display:block;font-family:var(--en);font-size:11px;color:var(--sky);margin-top:8px}
-#tvQ{font-size:30px;font-weight:900;margin-top:22px;min-height:44px}
+#tvQ{font-size:30px;font-weight:900;margin-top:20px;min-height:44px}
+#tvSkillH{font-family:var(--en);font-size:12px;color:var(--gold);margin-top:20px}
+#tvSkills{display:flex;gap:12px;justify-content:center;margin-top:12px}
+#tvSkills .ps{font-size:21px;font-weight:900;color:var(--line);background:var(--sky);padding:6px 14px;border:3px solid var(--line);box-shadow:3px 3px 0 var(--line);opacity:0;transform:scale(.4);transition:opacity .25s,transform .3s cubic-bezier(.3,1.7,.6,1)}
+#tvSkills .ps.on{opacity:1;transform:none}
+#tvDone .made{font-size:20px;font-weight:700;color:var(--muted);margin-top:18px;text-shadow:2px 2px 0 var(--line)}
 #tvBtns{display:flex;justify-content:center;gap:30px;margin-top:20px;opacity:0;transition:opacity .4s}
 #tvBtns.on{opacity:1}
 .ybtn{font-family:var(--en);font-size:20px;color:var(--ink);background:var(--bg2);border:4px solid var(--ink);padding:14px 30px;cursor:pointer;position:relative}
 .ybtn.sel{background:var(--gold);color:var(--line)}
 .ybtn.sel::before{content:'▶';position:absolute;left:-30px;top:14px;color:var(--gold);animation:blink .6s steps(2) infinite}
-#tvDone{position:absolute;left:0;right:0;top:250px;text-align:center;opacity:0;transform:scale(.6);transition:all .5s cubic-bezier(.3,1.6,.6,1);z-index:5}
+#tvDone{position:absolute;left:0;right:0;top:170px;text-align:center;opacity:0;transform:scale(.6);transition:all .5s cubic-bezier(.3,1.6,.6,1);z-index:5}
 #tvDone.on{opacity:1;transform:none}
 #tvDone h2{font-size:52px;font-weight:900;color:var(--gold);text-shadow:5px 5px 0 var(--line)}
 #tvDone p{font-size:28px;font-weight:900;margin-top:14px;text-shadow:3px 3px 0 var(--line)}
@@ -458,10 +463,11 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
       <div id="tvBox" class="pxbox">
         <div class="new">✦ NEW PARTY MEMBER AVAILABLE ✦</div>
         <div class="who"><div id="tvPort"></div><div class="nm"><b>品瑜 PINYU</b><span>《好奇心驅動型人類》</span><small>CLASS: EXPLORER ・ LV ??</small></div></div>
+        <div id="tvSkillH">★ PARTY SKILLS ★</div><div id="tvSkills"></div>
         <div id="tvQ"></div>
         <div id="tvBtns"><button class="ybtn sel" data-i="0">NO</button><button class="ybtn" data-i="1">YES</button></div>
       </div>
-      <div id="tvDone"><h2>🎉 PINYU 加入了你的隊伍！</h2><p>一起做點酷東西吧！</p><div class="ty blink">THANK YOU ♥</div></div>
+      <div id="tvDone"><h2>🎉 PINYU 加入了你的隊伍！</h2><p>一起做點酷東西吧！</p><div class="made">🛠 這份簡報由 PINYU × AI 一起做出來</div><div class="ty blink">THANK YOU ♥</div></div>
       <div id="tvHero"></div>
       <div id="confBox"></div>
     </div>
@@ -520,10 +526,11 @@ const CONTENT = {
     ['island-5.jpg','島友留言','朋友之間留言、戳一下，互相提醒'],
   ],
   tavernQ:'是否邀請 PINYU 加入隊伍？',
+  partySkills:[['🔍','深入分析'],['💬','需求轉譯'],['🤝','統籌協調'],['🛠','動手實作']],
   notes:{
     start:'按 → 或點 PRESS START 開始，會直接進入角色卡。',
     village:'【角色卡・約 25 秒】\n大家好，我是品瑜。我在清大讀哲學，副修法律，MBTI 是 INFJ。我給自己的稱號是「好奇心驅動型人類」，因為我常常被新鮮、有趣的東西吸引……但其實我也很喜歡窩在家裡。職業的話，目前轉職中，下一個職業是什麼，我也還在探索。\n\n【基礎屬性・約 40 秒】（小例子待補）\n……我很喜歡學新東西，這也是我今天會出現在這裡的原因之一，等一下再告訴大家。\n不過我也有個 bug：想太多。開始做一件事之前，會想把所有事情和路徑都想完……所以腦內已經跑完 87 個版本，本人還在床上。目前正在修正中。\n\n【興趣背包】挑 2–3 個點開來講。按 → 關閉小卡，再按 → 前往世界地圖。',
-    tavern:'【冒險者酒館・約 40 秒】\n我沒有特別限定要做哪一種專題。比起題目，我更期待遇到不同背景的人，一起發現問題、把有趣的想法做出來。\n我可以帶來問題分析、需求整理，還有企劃和協調的實務經驗，也很願意一起研究、一起反覆修正。\n所以——要不要邀請我加入你的隊伍？（反正只有 YES 可以選）\n→ 按 →（游標在 NO，按下去 NO 會飛走）／ 再按 → YES',
+    tavern:'【冒險者酒館・約 40 秒】\n我沒有特別限定要做哪一種專題。比起題目，我更期待遇到不同背景的人，一起發現問題、把有趣的想法做出來。\n如果你邀請我加入，我可以帶來四個技能：深入分析問題、把需求轉譯成大家都懂的方案、統籌協調，還有動手實作。\n對了——今天這份簡報，也是我用 AI 一步一步做出來的。\n所以，要不要邀請我加入你的隊伍？（反正只有 YES 可以選）\n→ 按 →（NO 會飛走）／ 再按 → YES',
   },
   battleNotes:[
     '【家教】第一張是家教，我教國中小數學，也當過安親班老師。\n教數學最重要的，是先找出學生卡在哪裡——可能是思考方式、可能是沒有動機，也可能是個性。所以第一招：問題診斷！\n→ 按 → 出招',
@@ -996,7 +1003,9 @@ function noFly(){if(tvStep>=1)return;tvStep=1;$$('.ybtn')[0].classList.add('fly'
 function selYes(i){$$('.ybtn').forEach((b,k)=>b.classList.toggle('sel',k===i));}
 async function enterTavern(){
   tvStep=0;$('#tvBox').style.opacity=1;$('#tvBtns').classList.remove('on');$('#tvDone').classList.remove('on');$('#tvHero').classList.remove('on');$('#confBox').innerHTML='';$$('.ybtn').forEach(b=>b.classList.remove('fly'));selYes(0);
-  await wait(400);await type($('#tvQ'),CONTENT.tavernQ,60);$('#tvBtns').classList.add('on');
+  $('#tvSkills').innerHTML=CONTENT.partySkills.map(p=>`<span class="ps">${p[0]} ${p[1]}</span>`).join('');$('#tvQ').textContent='';
+  await wait(500);for(const e of $$('#tvSkills .ps')){e.classList.add('on');await wait(280);}
+  await wait(300);await type($('#tvQ'),CONTENT.tavernQ,60);$('#tvBtns').classList.add('on');
 }
 async function confirmYes(){
   if(tvStep>=2)return;tvStep=2;
