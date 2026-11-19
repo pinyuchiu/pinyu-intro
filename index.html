@@ -227,6 +227,17 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
 #book .pn{font-family:var(--en);font-size:11px;color:#9a7a62;margin-top:18px}
 #book .lab{font-size:46px;font-weight:900}
 #book .ln{width:70%;height:4px;background:#e6d3ae;margin-top:14px}
+ #bookView{position:absolute;inset:0;z-index:20;opacity:0;pointer-events:none;transition:opacity .6s;background:radial-gradient(ellipse at center,#4a2c4e 0%,#2a1830 70%,#1a0f20 100%)}
+#bookView.on{opacity:1}
+#bookView .bt{position:absolute;left:0;right:0;top:44px;text-align:center;font-size:30px;font-weight:900;color:var(--gold);text-shadow:4px 4px 0 var(--line)}
+#bookSvg{position:absolute;left:140px;top:118px}
+#bkIcon{position:absolute;left:790px;top:270px;width:160px;height:160px}
+#bkLeaf{position:absolute;left:645px;top:170px;width:460px;height:420px;transform-origin:left center;transform-style:preserve-3d;display:none}
+#bkLeaf.turn{transition:transform .8s cubic-bezier(.45,.05,.55,.95);transform:rotateY(-180deg)}
+#bkLeaf .f{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center}
+#bkLeaf .fr{background:linear-gradient(90deg,#b9ab8a 0,#d6caac 3%,#efe6d0 10%,#efe6d0 95%,#e0d4b8 100%)}
+#bkLeaf .bk{transform:rotateY(180deg);background:linear-gradient(270deg,#b9ab8a 0,#d6caac 3%,#efe6d0 10%,#efe6d0 95%,#e0d4b8 100%)}
+#bkPersp{position:absolute;inset:0;perspective:1800px}
 .reflWrap{position:absolute;width:87px;height:62px;overflow:hidden;opacity:0;transition:opacity 1s;animation:wobble 2.2s ease-in-out infinite}
 .reflWrap.on{opacity:.4}
 .reflWrap svg{transform:translateY(61px) scaleY(-.6);transform-origin:top;filter:saturate(.7) brightness(1.2)}
@@ -402,9 +413,10 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
     <div id="evt"></div>
     <div id="runStart" class="blink">▶ PRESS → TO RUN</div>
     <div id="runCap" class="pxbox"><h4 id="rcT"></h4><p id="rcP"></p></div>
-    <div id="book"><div class="pgL"></div><div class="pgR"></div><div class="leaf"><div class="lf fr"></div><div class="lf bk"></div></div></div>
-    <div id="runLoad" class="pxbox"><span>🔍 探索中……</span><div class="track"><div class="fill" id="rlFill"></div></div><span class="pct blink" id="rlPct">0%</span></div>
-  </div></section>
+        <div id="runLoad" class="pxbox"><span>🔍 探索中……</span><div class="track"><div class="fill" id="rlFill"></div></div><span class="pct blink" id="rlPct">0%</span></div>
+  </div>
+  <div id="bookView"><div class="cv"><div class="bt">📚 圖書館｜探索知識</div><svg id="bookSvg" width="1000" height="540" viewBox="0 0 200 108" shape-rendering="crispEdges"></svg><div id="bkIcon"></div><div id="bkPersp"><div id="bkLeaf"><div class="f fr"></div><div class="f bk"></div></div></div></div></div>
+  </section>
 
   <!-- ISLAND -->
   <section class="scene" id="s-island"><div class="cv">
@@ -582,7 +594,9 @@ function nightSVG(){
    ========================================================= */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let token=0;const timers=[];
-const wait=ms=>new Promise(res=>{const t=setTimeout(res,ms);timers.push(t)});
+let FAST=false;
+const wait=ms=>new Promise(res=>{if(FAST)return res();const t=setTimeout(res,ms);timers.push(t)});
+(function(){const _a=Element.prototype.animate;Element.prototype.animate=function(k,o){if(FAST){o=typeof o==='number'?1:Object.assign({},o,{duration:1,delay:0});}return _a.call(this,k,o);};})();
 function clearTimers(){timers.forEach(clearTimeout);timers.length=0;token++;}
 async function type(el,text,speed=38){const my=token;el.textContent='';el.classList.add('caret');for(const ch of [...text]){if(my!==token)return;el.textContent+=ch;await wait(ch==='\n'?200:speed);}el.classList.remove('caret');}
 function fit(){document.documentElement.style.setProperty('--k',Math.min(innerWidth/1280,innerHeight/720));}
@@ -701,7 +715,7 @@ function resetBattle(){
   $('#shards').innerHTML='';$('#shards').style.display='none';$('#cracks').innerHTML='';$('#ptcBox').innerHTML='';
   $('#bCard').classList.add('out');renderCard(0);
 }
-function enterBattle(){resetBattle();setTimeout(()=>$('#bCard').classList.remove('out'),300);battleNote();}
+function enterBattle(){resetBattle();if(FAST)$('#bCard').classList.remove('out');else setTimeout(()=>{if(bHits===0)$('#bCard').classList.remove('out')},300);battleNote();}
 async function attack(){
   const j=CONTENT.jobs[bJob],s=j.skills[bSkill],skills=$$('#bCard .skill');
   const card=$('#holdCard');card.textContent=`${s[0]} ${s[1]}`;
@@ -826,6 +840,7 @@ function applyCam(){
 }
 const scr=x=>x-camX;
 function runTo(target){
+  if(FAST){camX=target;applyCam();return Promise.resolve();}
   const my=token;$('#rHero').classList.add('running');
   const from=camX,dist=target-from,dur=Math.max(1400,dist*1.7),t0=performance.now();
   return new Promise(res=>{const f=now=>{if(my!==token)return res();const t=Math.min(1,(now-t0)/dur),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;camX=from+dist*e;applyCam();if(t<1)requestAnimationFrame(f);else{$('#rHero').classList.remove('running');res();}};requestAnimationFrame(f);});
@@ -833,7 +848,7 @@ function runTo(target){
 function evtEl(cls,html,x,y){const d=document.createElement('div');d.className=cls;d.innerHTML=html;d.style.left=x+'px';d.style.top=y+'px';$('#evt').appendChild(d);return d;}
 async function runEvent(i){
   const st=CONTENT.runStops[i],hx=HERO_X+43,hy=520;
-  if(i===0){bookPage=0;const b=$('#book');b.querySelector('.pgL').innerHTML=pageL(0);b.querySelector('.pgR').innerHTML=pageR(0);b.querySelector('.leaf').style.display='none';b.classList.add('on');}
+  if(i===0){await wait(700);showBook();}
   if(i===1){const says=['嗨！','好久不見！','最近在忙什麼？','📰 今日新聞！'];
     for(const n of $$('.npc')){const k=+n.dataset.i;n.classList.remove('hop');n.offsetHeight;n.classList.add('hop');const x=parseFloat(n.style.left)-camX;evtEl('say',says[k],Math.min(x-10,1100),440-(k%2)*42);await wait(300);}
     const nx=parseFloat($$('.npc')[3].style.left)-camX;const p=evtEl('chipf','📰',nx,520);p.animate([{transform:'translate(0,0)'},{transform:`translate(${(hx-nx)/2}px,-120px)`},{transform:`translate(${hx-nx}px,-40px)`}],{duration:900,easing:'ease-in-out',fill:'forwards'});}
@@ -853,22 +868,54 @@ async function runEvent(i){
     const t0=performance.now(),my=token;const f=now=>{if(my!==token)return;const t=Math.min(1,(now-t0)/2600);$('#rlPct').textContent=Math.round(t*CONTENT.runLoading)+'%';if(t<1)requestAnimationFrame(f);};requestAnimationFrame(f);}
 }
 let bookPage=0;
-function pageL(k){const p=CONTENT.runStops[0].pages[k];return `<div class="emo">${p[0]}</div><div class="pn">PAGE ${k+1} / ${CONTENT.runStops[0].pages.length}</div>`;}
-function pageR(k){return `<div class="lab">${CONTENT.runStops[0].pages[k][1]}</div><div class="ln"></div><div class="ln"></div><div class="ln"></div>`;}
-async function flipBook(){
-  const b=$('#book'),lf=b.querySelector('.leaf'),k=bookPage;bookPage++;
-  lf.classList.remove('turn');lf.style.display='block';lf.querySelector('.fr').innerHTML=pageR(k);lf.querySelector('.bk').innerHTML=pageL(k+1);
-  b.querySelector('.pgR').innerHTML=pageR(k+1);lf.offsetHeight;lf.classList.add('turn');
-  await wait(780);b.querySelector('.pgL').innerHTML=pageL(k+1);lf.style.display='none';lf.classList.remove('turn');
+const ICONS={
+  class:{pal:{o:'#3a2a20',b:'#8a5a3b',g:'#3f7d5a',w:'#f4f1e6',y:'#ffd56b'},rows:["................",".oooooooooooooo.",".obbbbbbbbbbbbo.",".obggggggggggbo.",".obggwgggwwwgbo.",".obgwgwgggwggbo.",".obgwwwgggwggbo.",".obgwgwgggwggbo.",".obgwgwggwwwgbo.",".obggggggggggbo.",".obbbbbbbbbbybo.",".oooooooooooooo.","...oo......oo...","...oo......oo...","..ooo......ooo..","................"]},
+  read:{pal:{o:'#3a2a20',r:'#d0533d',u:'#3d6fd0',e:'#3f9a5a',p:'#fff3dc',y:'#ffd56b'},rows:["................","................","..oooooooooooo..","..orrrrrrrrrro..","..oppppppppppo..","..oooooooooooo..","...oooooooooooo.","...ouuuuuyuuuuo.","...oppppppppppo.","...oooooooooooo.",".oooooooooooo...",".oeeeeeeeeeeo...",".oeeeeeeeeeeo...",".oppppppppppo...",".oooooooooooo...","................"]},
+  biz:{pal:{o:'#3a2a20',k:'#4fb3e6',y:'#ffcc4d',Y:'#e09b22'},rows:["................","..........oooo..",".........oyyyyo.",".........oyYYyo.",".........oyyyyo.","..........oooo..","..........ooo...","......ooo.oko...","......oko.oko...","..ooo.oko.oko...","..oko.oko.oko...","..oko.oko.oko...","..oko.oko.oko...",".oooooooooooooo.","................","................"]},
+  dance:{pal:{o:'#3a2a20',n:'#6a4aa0',p:'#ff9ec0',P:'#e46f9b',w:'#fff3dc'},rows:["........nnnnnnn.","........n.....n.","........nnnnnnn.","........n.....n.","........n.....n.","......nnn...nnn.",".....nnnn..nnnn.","......nn....nn..","................","..oooooooo......",".oppppppppoo....",".opwwppppppppo..",".oppPPPPppppppo.","..oooooooooooo..","................","................"]},
+};
+const PAGE_ICONS=['class','read','biz','dance'];
+function iconSVG(key,size){const ic=ICONS[key];return `<svg viewBox="0 0 16 16" width="${size}" height="${size}" shape-rendering="crispEdges">${rectRuns(ic.rows,ic.pal)}</svg>`;}
+function lineSVG(w,h,seed){let r='';let k=seed;for(let y=6;y<h-4;y+=6){let x=6;while(x<w-10){k=(k*9301+49297)%233280;const len=4+(k%9);if(x+len>w-6)break;r+=`<rect x="${x}" y="${y}" width="${len}" height="2" fill="#5a4a3a"/>`;x+=len+2+(k%3);}}return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" shape-rendering="crispEdges" preserveAspectRatio="none">${r}</svg>`;}
+function buildBook(){
+  const P=(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`;
+  const top=x=>{const d=Math.min(1,Math.abs(x-100)/92);return 10+Math.round(6*Math.pow(d,1.6));};
+  const bot=x=>{const d=Math.min(1,Math.abs(x-100)/92);return 92+Math.round(4*Math.pow(d,1.3));};
+  let s='';
+  // 封面
+  for(let x=2;x<198;x++){const d=Math.abs(x-100)/96;const t=top(Math.max(8,Math.min(192,x)))+4,b=bot(Math.max(8,Math.min(192,x)))+9;s+=P(x,t,1,b-t,'#6b4632');s+=P(x,b-2,1,2,'#3e2618');}
+  s+=P(1,20,1,82,'#3e2618')+P(198,20,1,82,'#3e2618');
+  // 書頁厚度
+  for(let x=8;x<193;x++){if(x>=99&&x<=101)continue;const b=bot(x);s+=P(x,b,1,1,'#d4c7aa')+P(x,b+1,1,1,'#bfb08f')+P(x,b+2,1,1,'#d4c7aa')+P(x,b+3,1,1,'#a8977a')+P(x,b+4,1,1,'#c8b996');}
+  // 書頁
+  for(let x=8;x<193;x++){if(x>=99&&x<=101)continue;const d=Math.abs(x-100)/92;let c='#efe6d0';if(d<.05)c='#b9ab8a';else if(d<.1)c='#d6caac';else if(d<.16)c='#e6dcc2';else if(d>.97)c='#e0d4b8';const t=top(x),b=bot(x);s+=P(x,t,1,b-t,c);s+=P(x,t,1,1,'#fff8e6');}
+  s+=P(99,9,3,88,'#7a6a50');
+  // 左頁文字線
+  let k=7;for(let y=22;y<88;y+=7){let x=18;while(x<88){k=(k*9301+49297)%233280;const len=5+(k%10);if(x+len>90)break;s+=P(x,y+Math.round((Math.abs(x-100)/92)*2),len,2,'#5a4a3a');x+=len+2+(k%3);}}
+  // 右頁底下幾行字
+  k=3;for(let y=80;y<90;y+=6){let x=112;while(x<184){k=(k*9301+49297)%233280;const len=5+(k%9);if(x+len>184)break;s+=P(x,y,len,2,'#5a4a3a');x+=len+2;}}
+  // 書籤
+  s+=P(170,90,6,14,'#d0533d')+P(171,104,2,2,'#d0533d')+P(174,104,2,2,'#d0533d');
+  $('#bookSvg').innerHTML=s;
 }
-function enterContinent(){$('#book').classList.remove('on');
+function showBook(){bookPage=0;$('#bkIcon').innerHTML=iconSVG(PAGE_ICONS[0],160);$('#bkLeaf').style.display='none';$('#bkLeaf').classList.remove('turn');$('#bookView').classList.add('on');}
+async function flipBook(){
+  const lf=$('#bkLeaf'),k=bookPage;bookPage++;
+  lf.classList.remove('turn');lf.style.display='block';
+  lf.querySelector('.fr').innerHTML=`<div style="margin-top:-60px">${iconSVG(PAGE_ICONS[k],160)}</div>`;
+  lf.querySelector('.bk').innerHTML=`<div style="position:absolute;inset:36px 40px 70px 40px">${lineSVG(90,80,k*13+5)}</div>`;
+  $('#bkIcon').innerHTML=iconSVG(PAGE_ICONS[k+1],160);
+  lf.offsetHeight;lf.classList.add('turn');
+  await wait(830);lf.style.display='none';lf.classList.remove('turn');
+}
+function enterContinent(){$('#bookView').classList.remove('on');
   rStep=0;camX=0;applyCam();$('#evt').innerHTML='';$('#runCap').classList.remove('on');$('#runLoad').classList.remove('on');$('#rlFill').style.width='0';$('#rlPct').textContent='0%';
   $('#dawn').style.opacity=0;$('#runStart').style.opacity=1;$('#hammer').classList.remove('swing');
   buildContinent();applyCam();setNotes('講稿｜未知大陸',CONTENT.continentNotes[0]);
 }
 async function continentNext(){
   if(rStep===1&&bookPage<CONTENT.runStops[0].pages.length-1){await flipBook();return true;}
-  $('#book').classList.remove('on');
+  $('#bookView').classList.remove('on');
   if(rStep>=CONTENT.runStops.length)return false;
   const i=rStep,st=CONTENT.runStops[i];rStep++;
   $('#runStart').style.opacity=0;$('#runCap').classList.remove('on');
@@ -948,30 +995,41 @@ const SCENES=[
 ];
 let cur=-1,starting=false,busy=false;
 function hud(sc){$('#hud').style.opacity=sc.type==='start'?0:1;if(sc.type==='start')return;const zi=sc.type==='map'?sc.t:sc.z;$('#hudZone').textContent=sc.type==='map'?'🗺 世界地圖':ZONES[zi].icon+' '+ZONES[zi].name;$('#hudDots').innerHTML=ZONES.map((z,i)=>`<b class="${i<zi?'done':i===zi?'cur':''}"></b>`).join('');}
-function go(i){
+async function go(i){
   if(i<0||i>=SCENES.length)return;
-  clearTimers();clearInterval(ptcTimer);busy=false;cur=i;const sc=SCENES[i];
+  clearTimers();clearInterval(ptcTimer);busy=false;stepCount=0;cur=i;const sc=SCENES[i];
   $$('.scene').forEach(s=>s.classList.remove('on'));$(sc.el).classList.add('on');hud(sc);
   if(sc.type==='start'){setNotes('講稿｜開場',CONTENT.notes.start);starting=false;$('#loadbar').style.display='none';$('#pressStart').style.display='';}
   else if(sc.type==='map')setNotes('世界地圖','按 → 或點擊發光的地點進入。');
   else if(CONTENT.notes[sc.id])setNotes('講稿｜'+ZONES[sc.z].name,CONTENT.notes[sc.id]);
-  if(sc.type==='map')enterMap(sc.t);
-  if(sc.id==='village')enterVillage();
+  if(sc.type==='map')await enterMap(sc.t);
+  if(sc.id==='village')await enterVillage();
   if(sc.id==='stages')enterBattle();
   if(sc.id==='continent')enterContinent();
   if(sc.id==='island')enterIsland();
-  if(sc.id==='tavern')enterTavern();
+  if(sc.id==='tavern')await enterTavern();
 }
 async function startGame(){if(starting)return;starting=true;$('#pressStart').style.display='none';const lb=$('#loadbar');lb.style.display='block';const f=lb.querySelector('i');f.style.transition='none';f.style.width='0';f.offsetHeight;f.style.transition='width 1.2s steps(10)';f.style.width='100%';await wait(1400);go(1);}
+let stepCount=0;const lastSteps={};
+function villageNext(){if(vStep===0){openStats();return true;}if(vStep===1){closeStats();return true;}return false;}
+const HANDLERS={village:villageNext,stages:battleNext,continent:continentNext,island:islandNext,tavern:tavernNext};
 async function next(){
   if(busy)return;const sc=SCENES[cur];
   if(sc.type==='start'){startGame();return;}
-  if(sc.id==='village'){if(vStep===0){openStats();return;}if(vStep===1){closeStats();return;}}
-  const handler={stages:battleNext,continent:continentNext,island:islandNext,tavern:tavernNext}[sc.id];
-  if(handler){busy=true;const my=token;const r=await handler();if(my===token)busy=false;if(r)return;}
-  go(cur+1);
+  const h=HANDLERS[sc.id];
+  if(h){busy=true;const my=token;const r=await h();if(my!==token)return;busy=false;if(r){stepCount++;return;}}
+  lastSteps[cur]=stepCount;go(cur+1);
 }
-function prev(){const sc=SCENES[cur];if(sc.id==='village'&&$('#statOv').classList.contains('show')){closeStats(true);vStep=0;return;}go(cur-1);}
+async function replay(i,n){
+  FAST=true;busy=true;
+  try{await go(i);busy=true;const h=HANDLERS[SCENES[i].id];for(let k=0;k<n&&h;k++){await h();}stepCount=n;}
+  finally{FAST=false;busy=false;}
+}
+function prev(){
+  if(busy)return;
+  if(stepCount>0){replay(cur,stepCount-1);return;}
+  if(cur>0)replay(cur-1,lastSteps[cur-1]||0);
+}
 document.addEventListener('keydown',e=>{
   if(['ArrowRight','ArrowDown',' ','Enter','PageDown'].includes(e.key)){e.preventDefault();next();}
   else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
@@ -984,7 +1042,7 @@ setTimeout(()=>$('#help').style.opacity=.7,4000);
 
 $$('.bg-day').forEach(b=>b.outerHTML=daySVG());
 $$('.bg-night,.bg-sky').forEach(b=>b.outerHTML=nightSVG());
-buildMap();buildVillage();buildBattle();buildContinent();buildIsland();buildTavern();
+buildMap();buildVillage();buildBattle();buildContinent();buildBook();buildIsland();buildTavern();
 go(0);
 </script>
 </body>
