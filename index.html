@@ -213,6 +213,27 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
 #runLoad .fill{height:100%;width:0;background:repeating-linear-gradient(90deg,var(--sky) 0 12px,#4fb3e6 12px 15px);transition:width 2.6s steps(14)}
 #runLoad .pct{font-family:var(--en);font-size:18px;color:var(--sky);width:60px}
 
+
+#book{position:absolute;left:530px;top:236px;width:560px;height:280px;opacity:0;transform:scale(.6);transition:opacity .4s,transform .45s cubic-bezier(.3,1.5,.6,1);z-index:8;perspective:1600px;box-shadow:0 0 0 8px #6b3f22,10px 10px 0 8px rgba(0,0,0,.4);background:#6b3f22}
+#book.on{opacity:1;transform:none}
+#book .pgL,#book .pgR,#book .lf{position:absolute;top:0;width:50%;height:100%;background:#fff3dc;color:#5b3a26;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#book .pgL{left:0;border-right:3px solid #d9c49a}
+#book .pgR{left:50%}
+#book .leaf{position:absolute;left:50%;top:0;width:50%;height:100%;transform-origin:left center;transform-style:preserve-3d;display:none}
+#book .leaf.turn{transition:transform .75s ease-in-out;transform:rotateY(-180deg)}
+#book .lf{left:0;width:100%;backface-visibility:hidden}
+#book .lf.bk{transform:rotateY(180deg);border-right:3px solid #d9c49a}
+#book .emo{font-size:96px;line-height:1}
+#book .pn{font-family:var(--en);font-size:11px;color:#9a7a62;margin-top:18px}
+#book .lab{font-size:46px;font-weight:900}
+#book .ln{width:70%;height:4px;background:#e6d3ae;margin-top:14px}
+.reflWrap{position:absolute;width:87px;height:62px;overflow:hidden;opacity:0;transition:opacity 1s;animation:wobble 2.2s ease-in-out infinite}
+.reflWrap.on{opacity:.4}
+.reflWrap svg{transform:translateY(61px) scaleY(-.6);transform-origin:top;filter:saturate(.7) brightness(1.2)}
+@keyframes wobble{0%,100%{transform:skewX(0)}50%{transform:skewX(4deg)}}
+.bubb{position:absolute;font-size:22px;font-weight:900;color:#fff;background:#7ad3ff2a;border:4px solid #bfe6ff;border-radius:44px;padding:12px 20px;white-space:nowrap;text-shadow:2px 2px 0 #1b3a6a}
+.ybtn.fly{transition:transform .8s cubic-bezier(.5,-0.5,.8,.6),opacity .8s;transform:translate(300px,-460px) rotate(600deg);opacity:0;pointer-events:none}
+
 /* ===== TAVERN ===== */
 #s-tavern{background:#2a1a12}
 #tvBg{position:absolute;inset:0}
@@ -247,29 +268,29 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
 #s-map.grey #mapMist{opacity:1}
 
 /* ===== ISLAND ===== */
-#laptop{position:absolute;left:300px;top:110px;width:680px;transition:transform .8s,opacity .8s}
+#laptop{position:absolute;left:170px;top:104px;width:940px;transition:transform .8s,opacity .8s}
 #laptop .scr{border:14px solid #2b2d42;border-bottom-width:18px;background:#000;box-shadow:0 0 0 4px var(--line)}
 #laptop .scr img{display:block;width:100%}
 #laptop .base{height:20px;margin:0 -50px;background:#9aa0b8;border:4px solid var(--line);border-top:none}
 #laptop.gone{transform:scale(.6) translateY(-60px);opacity:0}
-#oldLabel{position:absolute;left:300px;top:58px;font-size:24px;font-weight:900;color:var(--muted);transition:opacity .6s}
+#oldLabel{position:absolute;left:170px;top:52px;font-size:24px;font-weight:900;color:var(--muted);transition:opacity .6s}
 #stamp{position:absolute;left:560px;top:250px;font-size:56px;font-weight:900;color:var(--red);border:8px solid var(--red);padding:6px 26px;transform:rotate(-14deg) scale(3);opacity:0;transition:transform .25s cubic-bezier(.3,1.8,.6,1),opacity .2s;background:#14163399}
 #stamp.on{transform:rotate(-14deg) scale(1);opacity:1}
 #stamp.gone{opacity:0;transition:opacity .5s}
-#phone{position:absolute;left:760px;top:60px;width:300px;height:620px;background:#1b1c2b;border:6px solid var(--ink);border-radius:36px;padding:14px;box-shadow:0 0 0 5px var(--line),10px 10px 0 4px rgba(0,0,0,.4);opacity:0;transform:scale(.6);transition:opacity .6s,transform .6s cubic-bezier(.3,1.5,.6,1)}
+#phone{position:absolute;left:770px;top:40px;width:344px;height:640px;background:#1b1c2b;border:6px solid var(--ink);border-radius:36px;padding:14px;box-shadow:0 0 0 5px var(--line),10px 10px 0 4px rgba(0,0,0,.4);opacity:0;transform:scale(.6);transition:opacity .6s,transform .6s cubic-bezier(.3,1.5,.6,1)}
 #phone.on{opacity:1;transform:none}
-#phone .scr{width:100%;height:100%;border-radius:24px;overflow:hidden;position:relative;background:#000}
-#phone .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:opacity .5s,transform .5s}
+#phone .scr{width:100%;height:100%;border-radius:20px;overflow:hidden;position:relative;background:#fff7e6}
+#phone .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;transition:opacity .5s,transform .5s}
 #phone .scr img.hide{opacity:0;transform:translateX(30px)}
-#iPanel{position:absolute;left:150px;top:150px;width:540px;padding:24px 30px;opacity:0;transform:translateX(-30px);transition:all .5s}
+#iPanel{position:absolute;left:120px;top:170px;width:500px;padding:20px 26px;opacity:0;transform:translateX(-30px);transition:all .5s}
 #iPanel.on{opacity:1;transform:none}
-#iPanel h3{font-size:36px;font-weight:900;color:var(--gold);margin-top:6px}
-#iPanel .what{font-size:21px;font-weight:700;line-height:1.6;margin-top:8px}
+#iPanel h3{font-size:31px;font-weight:900;color:var(--gold);margin-top:6px}
+#iPanel .what{font-size:19px;font-weight:700;line-height:1.6;margin-top:8px}
 #iPanel .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-#iPanel .chip{font-size:17px;font-weight:900;color:var(--line);background:var(--sky);padding:3px 10px}
-#iPanel .cap{margin-top:18px;border-top:4px dashed #ffffff33;padding-top:14px;font-size:24px;font-weight:900;min-height:72px}
+#iPanel .chip{font-size:15px;font-weight:900;color:var(--line);background:var(--sky);padding:3px 10px}
+#iPanel .cap{margin-top:16px;border-top:4px dashed #ffffff33;padding-top:12px;font-size:21px;font-weight:900;min-height:72px}
 #iPanel .cap small{display:block;font-family:var(--en);font-size:11px;color:var(--muted);margin-bottom:6px}
-#optim{position:absolute;left:150px;top:520px;font-size:28px;font-weight:900;padding:12px 22px;opacity:0;transform:translateY(20px);transition:all .5s;display:flex;align-items:center;gap:14px}
+#optim{position:absolute;left:120px;top:520px;font-size:24px;font-weight:900;padding:12px 22px;opacity:0;transform:translateY(20px);transition:all .5s;display:flex;align-items:center;gap:14px}
 #optim.on{opacity:1;transform:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 #optim .gear{display:inline-block;animation:spin 2s linear infinite}
@@ -299,7 +320,6 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
       <div class="tag">一個好奇心驅動型人類的冒險紀錄</div>
       <div class="press blink" id="pressStart">▶ PRESS START</div>
       <div id="loadbar"><i></i></div>
-      <div class="hero" id="startHero"></div>
     </div>
   </section>
 
@@ -382,15 +402,15 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
     <div id="evt"></div>
     <div id="runStart" class="blink">▶ PRESS → TO RUN</div>
     <div id="runCap" class="pxbox"><h4 id="rcT"></h4><p id="rcP"></p></div>
+    <div id="book"><div class="pgL"></div><div class="pgR"></div><div class="leaf"><div class="lf fr"></div><div class="lf bk"></div></div></div>
     <div id="runLoad" class="pxbox"><span>🔍 探索中……</span><div class="track"><div class="fill" id="rlFill"></div></div><span class="pct blink" id="rlPct">0%</span></div>
   </div></section>
 
   <!-- ISLAND -->
   <section class="scene" id="s-island"><div class="cv">
     <div class="bg-night"></div>
-    <div id="oldLabel">📁 舊作：健身紀錄 App</div>
+    <div id="oldLabel">💪 健身紀錄 App</div>
     <div id="laptop"><div class="scr"><img src="img/old-fitness.jpg" alt="健身紀錄 App 舊作畫面"></div><div class="base"></div></div>
-    <div id="stamp">未完成</div>
     <div id="iPanel" class="pxbox">
       <div class="tagline">NEW PROJECT · 用 AI 協助規劃與實作</div>
       <h3>🏝 共同成長小島</h3>
@@ -410,7 +430,7 @@ html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;color:var(
         <div class="new">✦ NEW PARTY MEMBER AVAILABLE ✦</div>
         <div class="who"><div id="tvPort"></div><div class="nm"><b>品瑜 PINYU</b><span>《好奇心驅動型人類》</span><small>CLASS: EXPLORER ・ LV ??</small></div></div>
         <div id="tvQ"></div>
-        <div id="tvBtns"><button class="ybtn sel" data-i="0">YES</button><button class="ybtn" data-i="1">YES！</button></div>
+        <div id="tvBtns"><button class="ybtn sel" data-i="0">NO</button><button class="ybtn" data-i="1">YES</button></div>
       </div>
       <div id="tvDone"><h2>🎉 PINYU 加入了你的隊伍！</h2><p>一起做點酷東西吧！</p><div class="ty blink">THANK YOU ♥</div></div>
       <div id="tvHero"></div>
@@ -430,7 +450,7 @@ const CONTENT = {
   profile: {
     name:'品瑜', nameEn:'PINYU', title:'《好奇心驅動型人類》',
     rows:[['出身','清大人社｜哲學 × 法律'],['類型','INFJ'],['職業','探索者 🔄 轉職中 → ？？？']],
-    dex:'常出沒在新鮮有趣的地方，\n也很喜歡窩在家裡。',
+    dex:'遇到任何事，第一句話通常是：「為什麼？」\n常出沒在新鮮有趣的地方（或是家裡）',
   },
   talents:[
     ['🔍','追問為什麼','拆解問題，找出背後的原因'],
@@ -446,18 +466,18 @@ const CONTENT = {
   jobs:[
     { icon:'🎓', title:'家教｜國中小數學', sub:'家教・安親班',
       groups:[{items:['找出問題點：思考方式、動機、個性','因材施教，把困難的東西變簡單']}],
-      skills:[['🔍','問題診斷',15],['💡','化繁為簡',15]] },
+      skills:[['🔍','問題診斷',15],['💬','轉譯能力',15]] },
     { icon:'⚖️', title:'律師事務所｜助理',
       groups:[{h:'🏛 政府標案・民間諮詢會議專案負責人',items:['3 場 × 每場約 100 人','把多方需求落地成可執行的方案','在政府、老闆、廠商、參與者之間溝通協調']},
               {h:'📜 法律實務',items:['撰寫訴狀、與當事人開會等']}],
       skills:[['📋','專案統籌',15],['🤝','跨方協調',20]] },
     { icon:'💪', title:'小型健身房｜儲備幹部', sub:'營運管理',
       tiles:[['👥','人資'],['🔧','優化現有制度與作業流程'],['🖥','內外部系統規劃與設計'],['🎉','活動企劃'],['🧭','參與公司未來定位與發展的討論',true]],
-      skills:[['🛠','制度化思維',15],['🧭','經營者視角（學習中）',20]] },
+      skills:[['🛠','制度化思維',15],['🧭','學習經營者視角',20]] },
   ],
   twistLine:'……我，是誰？',
   runStops:[
-    {x:1150,icon:'📚',place:'圖書館',name:'探索知識',text:'來上培訓班・閱讀・商業・跳舞',chips:['📘 培訓班','📗 閱讀','📙 商業','💃 跳舞']},
+    {x:1150,icon:'📚',place:'圖書館',name:'探索知識',text:'培訓班・閱讀・商業知識・學跳舞',pages:[['📘','培訓班'],['📗','閱讀'],['💼','商業知識'],['💃','學跳舞']]},
     {x:2450,icon:'🌏',place:'小鎮廣場',name:'探索世界',text:'認識不同背景的人・和老朋友相聚・接收世界新聞'},
     {x:3750,icon:'🪞',place:'鏡湖',name:'探索自己',text:'記錄生活與想法・塔羅・回頭看以前寫的東西'},
     {x:5050,icon:'🔨',place:'工坊',name:'探索各種可能性',text:'比起一直想，現在學會動手做'},
@@ -474,29 +494,28 @@ const CONTENT = {
   notes:{
     start:'按 → 或點 PRESS START 開始，會直接進入角色卡。',
     village:'【角色卡・約 25 秒】\n大家好，我是品瑜。我在清大讀哲學，副修法律，MBTI 是 INFJ。我給自己的稱號是「好奇心驅動型人類」，因為我常常被新鮮、有趣的東西吸引……但其實我也很喜歡窩在家裡。職業的話，目前轉職中，下一個職業是什麼，我也還在探索。\n\n【基礎屬性・約 40 秒】（小例子待補）\n……我很喜歡學新東西，這也是我今天會出現在這裡的原因之一，等一下再告訴大家。\n不過我也有個 bug：想太多。開始做一件事之前，會想把所有事情和路徑都想完……所以腦內已經跑完 87 個版本，本人還在床上。目前正在修正中。\n\n【興趣背包】挑 2–3 個點開來講。按 → 關閉小卡，再按 → 前往世界地圖。',
-    tavern:'【冒險者酒館・約 40 秒】\n我沒有特別限定要做哪一種專題。比起題目，我更期待遇到不同背景的人，一起發現問題、把有趣的想法做出來。\n我可以帶來問題分析、需求整理，還有企劃和協調的實務經驗，也很願意一起研究、一起反覆修正。\n所以——要不要邀請我加入你的隊伍？（反正只有 YES 可以選）\n→ 按 → 選 YES ／ 再按 → 確認',
+    tavern:'【冒險者酒館・約 40 秒】\n我沒有特別限定要做哪一種專題。比起題目，我更期待遇到不同背景的人，一起發現問題、把有趣的想法做出來。\n我可以帶來問題分析、需求整理，還有企劃和協調的實務經驗，也很願意一起研究、一起反覆修正。\n所以——要不要邀請我加入你的隊伍？（反正只有 YES 可以選）\n→ 按 →（游標在 NO，按下去 NO 會飛走）／ 再按 → YES',
   },
   battleNotes:[
     '【家教】第一張是家教，我教國中小數學，也當過安親班老師。\n教數學最重要的，是先找出學生卡在哪裡——可能是思考方式、可能是沒有動機，也可能是個性。所以第一招：問題診斷！\n→ 按 → 出招',
-    '找到問題之後，再因材施教，把困難的東西變簡單。第二招：化繁為簡！\n→ 按 → 出招（之後自動換下一張卡）',
+    '找到問題之後，再因材施教，把困難的東西轉成對方聽得懂的話。第二招：轉譯能力！\n→ 按 → 出招（之後自動換下一張卡）',
     '【律師事務所】第二張是律師事務所。我是移民署民間諮詢會議的專案負責人，辦了三場、每場大約一百人。\n政府、老闆、廠商、參與者要的都不一樣，我要把這些需求落地成真的做得出來的方案——專案統籌！\n→ 按 → 出招',
     '過程中，我一直在這些人之間來回溝通，讓大家往同一個方向走——跨方協調！另外也接觸了撰寫訴狀、和當事人開會這些法律實務。\n→ 按 → 出招',
     '【小型健身房】最後是一間小型健身房，我是儲備幹部，做的是營運管理：人資、優化制度和流程、規劃內外部系統、活動企劃。\n其實我在做的，是讓一間公司不靠某個人的判斷也能好好運作——制度化思維！\n→ 按 → 出招',
-    '後來我也開始參與公司未來定位和發展的討論，學著從經營者的角度看事情。這招還在練習中——經營者視角！\n→ 按 → 最後一擊',
+    '後來我也開始參與公司未來定位和發展的討論，學著從經營者的角度看事情。這招還在練習中——學習經營者視角！\n→ 按 → 最後一擊',
     '（史萊姆倒下、融化……長出一個灰暗、虛脫的我。停頓一下，讓大家看。）\n→ 按 → 畫面碎裂',
     '（停一拍）……我，是誰？\n→ 按 → 前往未知大陸',
   ],
   continentNotes:[
     '（黑屏回來，停一拍）\n所以，我出發了。我現在的人生，正在往四個方向探索。\n→ 按 → 開始跑',
-    '第一站，圖書館：探索知識。像是來上這個培訓班，還有閱讀、商業，甚至跳舞。\n→ 按 → 繼續跑',
+    '第一站，圖書館：探索知識。（每按一次 → 翻一頁）\n像是來上這個培訓班、閱讀、商業知識，還有學跳舞。\n翻完四頁後 → 按 → 繼續跑',
     '第二站，小鎮廣場：探索世界。認識不同背景的人、和很久沒聯絡的朋友吃飯聊天，也會固定接收世界新聞。\n→ 按 → 繼續跑',
-    '第三站，鏡湖：探索自己。我會記錄生活和想法，也玩塔羅。回頭看以前寫的東西，常常會發現很多當下看不到的事。\n→ 按 → 繼續跑',
+    '第三站，鏡湖：探索自己。我會記錄生活、寫下想法，也玩塔羅。\n回頭看以前寫的東西，常常會發現很多當下看不到的事。\n→ 按 → 繼續跑',
     '最後一站，工坊：探索各種可能性。比起一直想，我現在學會實際去嘗試、動手做——所以，探索還在 87% loading 中。\n→ 按 → 回到世界地圖',
   ],
   islandNotes:[
-    '其實我很早就想做一個健身紀錄的 App……\n→ 按 → 蓋章',
-    '但做到一半就停了。（笑）又是想太多。\n→ 按 → 進化',
-    '這次換個方式。這是共同成長小島：我和朋友約好每週閱讀、完成成長任務，打卡就能拿 XP，一起把小島蓋起來。我用 AI 協助規劃和實作。\n→ 按 → 下一張',
+    '這是我之前做過的健身紀錄 App。（口頭簡單帶過）\n→ 按 → 換到共同成長小島',
+    '這是共同成長小島：我和朋友約好每週閱讀、完成成長任務，打卡就能拿 XP，一起把小島蓋起來。我用 AI 協助規劃和實作。\n→ 按 → 下一張',
     '賺到的 XP 可以解鎖建築、擺到小島上。\n→ 按 → 下一張',
     '這裡會把努力變成看得到的數字。\n→ 按 → 下一張',
     '每次打卡都可以留下心得。\n→ 按 → 下一張',
@@ -754,6 +773,10 @@ let rStep=0,camX=0;
 const HERO_X=420,ROCKS=[620,1780,3060,4360];
 const NPC_ROWS=["...HHH...","..HHHHH..","..HSSSH..","..SESES..","..SSSSS..","...SSS...",".CCCCCCC.","CCCCCCCCC","S.CCCCC.S","S.CCCCC.S","..CCCCC..","..PP.PP..","..PP.PP..","..PP.PP..","..OO.OO.."];
 function npcSVG(px,h,c,pnt){return `<svg viewBox="0 0 9 15" width="${9*px}" height="${15*px}" shape-rendering="crispEdges" style="display:block">${rectRuns(NPC_ROWS,{H:h,S:'#f1c9a5',E:'#2a1a12',C:c,P:pnt,O:'#222'})}</svg>`;}
+function personSVG(px,pal,short){
+  let rows=HERO;if(short)rows=HERO.map((r,y)=>y>=12?r.replace(/H/g,y<=17?'W':'.'):r);
+  return `<svg viewBox="0 0 29 34" width="${29*px}" height="${34*px}" shape-rendering="crispEdges" style="display:block">${rectRuns(rows,Object.assign({},PAL,pal))}</svg>`;
+}
 function buildContinent(){
   // 遠景山
   let f='';for(let x=-200;x<3400;x+=300){const h=140+((x/300)%3)*40;for(let i=0;i<h;i+=20){const hw=Math.round((150*(1-i/h))/20)*20;f+=R(x-hw,600-i-20,hw*2,20,'#2a2456');}}
@@ -776,8 +799,15 @@ function buildContinent(){
   w+=R(L+150,420,150,180,'#b0583a')+R(L+140,398,170,24,'#6e2f22')+R(L+180,460,28,30,'#ffd56b')+R(L+240,460,28,30,'#ffd56b')+R(L+210,530,30,70,'#3a2412');
   w+=R(L-200,470,8,130,'#3a3a4a')+R(L-208,452,24,20,'#ffd56b');
   // 鏡湖
-  L=S[2].x;[[-240,580],[-220,540],[-180,460],[-120,340]].forEach(([o,wd],k)=>w+=R(L+o,600+k*16,wd,16,k?'#2f64b0':'#4a86d1'));
-  w+=R(L+30,606,40,6,'#fff3c4')+R(L+40,620,24,4,'#fff3c4')+R(L-260,570,6,30,'#3f7d3a')+R(L-250,580,6,20,'#3f7d3a')+R(L+340,575,6,25,'#3f7d3a');
+  L=S[2].x;
+  [[-400,800,'#3f78c8'],[-380,760,'#356bb8'],[-340,680,'#2d5ea6'],[-280,560,'#264f8f'],[-200,400,'#21457d']].forEach(([o,wd,c],k)=>w+=R(L+o,600+k*16,wd,16,c));
+  w+=R(L-400,596,800,6,'#5a9ad8');
+  w+=`<g class="waves">${[[-200,612],[-60,628],[60,612],[200,640],[-120,652],[120,660],[280,620]].map(([o,y])=>R(L+o,y,30,3,'#8fc0f0')).join('')}</g>`;
+  w+=R(L+150,606,50,6,'#fff3c4')+R(L+160,622,30,4,'#fff3c4')+R(L+168,636,14,4,'#fff3c4');
+  w+=R(L+40,606,24,6,'#3f9a5a')+R(L+48,602,8,6,'#ff9ec0')+R(L+260,610,20,5,'#3f9a5a')+R(L-120,626,22,5,'#3f9a5a');
+  w+=R(L-420,592,150,10,'#8a5a3b')+R(L-410,602,8,50,'#6b3f22')+R(L-290,602,8,50,'#6b3f22');for(let x=L-420;x<L-270;x+=25)w+=R(x,592,3,10,'#6b3f22');
+  [[L+390,560],[L+402,570],[L+414,566]].forEach(([x,y])=>w+=R(x,y,6,600-y,'#3f7d3a')+R(x-2,y-8,10,10,'#8a5a3b'));
+  [[L-150,540],[L+20,520],[L+120,560],[L+240,530],[L+330,555],[L-60,570]].forEach(([x,y])=>w+=R(x,y,6,6,'#fff3a0','tw'));
   // 工坊＋鷹架
   L=S[3].x;w+=R(L+200,440,220,160,'#8a5a3b')+R(L+190,418,240,24,'#5a3420')+R(L+280,520,40,80,'#3a2412')+R(L+120,572,60,28,'#4a4a5a')+R(L+110,566,80,8,'#5a5a6a');
   [-190,-110,-30].forEach(o=>w+=R(L+o,420,8,180,'#a87a4a'));[440,500,560].forEach(y=>w+=R(L-200,y,180,6,'#a87a4a'));
@@ -785,7 +815,8 @@ function buildContinent(){
   const ws=$('#worldSvg');ws.setAttribute('width',6600);ws.setAttribute('height',720);ws.innerHTML=w;
   // NPC
   const N=S[1].x+60;
-  $('#npcs').innerHTML=[[N-250,'#3b2a20','#e05a5a','#334'],[N+120,'#e8c06a','#4fb3e6','#443'],[N+225,'#222','#6be29b','#335'],[N+320,'#7a4a2a','#f2f2f2','#333']].map(([x,h,c,p],i)=>`<div class="npc" data-i="${i}" style="left:${x}px;top:${600-60}px">${npcSVG(4,h,c,p)}</div>`).join('');
+  const NP=[[N-250,{H:'#3b2a20',h:'#2a1a12',W:'#e05a5a',w:'#b84444',K:'#2e3a55',k:'#3a4866'},1],[N+110,{H:'#e8c06a',h:'#c8a04a',W:'#4fb3e6',w:'#3a90c0',K:'#3a2a50',k:'#4a3a60'},0],[N+215,{H:'#222',h:'#111',W:'#6be29b',w:'#48b878',K:'#3a3a4a',k:'#4a4a5a'},1],[N+320,{H:'#7a4a2a',h:'#5a3a1a',W:'#f2f2f2',w:'#c8c8c8',K:'#7a3a5a',k:'#8a4a6a'},0]];
+  $('#npcs').innerHTML=NP.map(([x,pal,short],i)=>`<div class="npc" data-i="${i}" style="left:${x}px;top:498px">${personSVG(3,pal,short)}</div>`).join('');
   $('#rHero .b').innerHTML=heroSVG(3);
 }
 function applyCam(){
@@ -802,26 +833,42 @@ function runTo(target){
 function evtEl(cls,html,x,y){const d=document.createElement('div');d.className=cls;d.innerHTML=html;d.style.left=x+'px';d.style.top=y+'px';$('#evt').appendChild(d);return d;}
 async function runEvent(i){
   const st=CONTENT.runStops[i],hx=HERO_X+43,hy=520;
-  if(i===0){const door=[scr(st.x+60),520],tg=[[250,330],[380,270],[520,270],[640,330]];
-    for(let k=0;k<st.chips.length;k++){const c=evtEl('chipf',st.chips[k],door[0],door[1]);c.animate([{transform:`translate(0,0) scale(.3)`,opacity:0},{transform:`translate(${tg[k][0]-door[0]}px,${tg[k][1]-door[1]}px) scale(1)`,opacity:1}],{duration:700,easing:'cubic-bezier(.3,1.4,.6,1)',fill:'forwards'});await wait(250);}}
+  if(i===0){bookPage=0;const b=$('#book');b.querySelector('.pgL').innerHTML=pageL(0);b.querySelector('.pgR').innerHTML=pageR(0);b.querySelector('.leaf').style.display='none';b.classList.add('on');}
   if(i===1){const says=['嗨！','好久不見！','最近在忙什麼？','📰 今日新聞！'];
-    for(const n of $$('.npc')){const k=+n.dataset.i;n.classList.remove('hop');n.offsetHeight;n.classList.add('hop');const x=parseFloat(n.style.left)-camX;evtEl('say',says[k],Math.min(x-20,1100),470-(k%2)*40);await wait(300);}
-    const nx=parseFloat($$('.npc')[3].style.left)-camX;const p=evtEl('chipf','📰',nx,500);p.animate([{transform:'translate(0,0)'},{transform:`translate(${(hx-nx)/2}px,-120px)`},{transform:`translate(${hx-nx}px,-40px)`}],{duration:900,easing:'ease-in-out',fill:'forwards'});}
-  if(i===2){const d=evtEl('chipf','📔 日記',560,420);d.animate([{transform:'scale(.2)',opacity:0},{transform:'scale(1)',opacity:1}],{duration:400,fill:'forwards'});
-    const sym=['🌙','⭐','☀️'],cards=[];for(let k=0;k<3;k++){const c=evtEl('tarot',`<div class="bk"></div><div class="fr">${sym[k]}</div>`,720+k*90,360);c.animate([{opacity:0},{opacity:1}],{duration:400});cards.push(c);await wait(200);}
-    await wait(400);for(const c of cards){c.classList.add('flip');await wait(350);}}
+    for(const n of $$('.npc')){const k=+n.dataset.i;n.classList.remove('hop');n.offsetHeight;n.classList.add('hop');const x=parseFloat(n.style.left)-camX;evtEl('say',says[k],Math.min(x-10,1100),440-(k%2)*42);await wait(300);}
+    const nx=parseFloat($$('.npc')[3].style.left)-camX;const p=evtEl('chipf','📰',nx,520);p.animate([{transform:'translate(0,0)'},{transform:`translate(${(hx-nx)/2}px,-120px)`},{transform:`translate(${hx-nx}px,-40px)`}],{duration:900,easing:'ease-in-out',fill:'forwards'});}
+  if(i===2){
+    const rw=evtEl('reflWrap',heroSVG(3,{noMag:false}),HERO_X,600);await wait(50);rw.classList.add('on');
+    const words=['📝 生活紀錄','💭 想法','🔮 塔羅'],bs=[];
+    for(let k=0;k<3;k++){const x=600+k*190;const b=evtEl('bubb',words[k],x,640);b.animate([{transform:'translateY(0) scale(.3)',opacity:0},{transform:'translateY(-150px) scale(.9)',opacity:1,offset:.6},{transform:'translateY(-200px) scale(1)',opacity:1}],{duration:1600,easing:'ease-out',fill:'forwards'});bs.push(b);await wait(450);}
+    await wait(1500);
+    for(const b of bs){b.animate([{transform:'translateY(-200px) scale(1)',opacity:1},{transform:'translateY(-210px) scale(1.4)',opacity:0}],{duration:300,fill:'forwards'});const r=b.getBoundingClientRect();await wait(200);}
+    const c=evtEl('chipf','📖 回頭看以前寫的東西，會發現當下看不到的事',560,410);c.animate([{transform:'scale(.3)',opacity:0},{transform:'scale(1)',opacity:1}],{duration:450,easing:'cubic-bezier(.3,1.5,.6,1)',fill:'forwards'});
+    await wait(500);evtEl('chipf','✨ 倒影對我笑了',HERO_X+110,620).style.cssText+='background:transparent;border:none;box-shadow:none;color:#fff3c4;font-size:20px';
+  }
   if(i===3){const hm=$('#hammer');hm.classList.remove('swing');hm.offsetHeight;hm.classList.add('swing');
     for(let k=0;k<4;k++){evtEl('say','叮！',600+((k*97)%180),420+((k*53)%70));await wait(480);}
     $('#blocks').insertAdjacentHTML('beforeend',R(st.x-70,480,56,38,'#e0b885')+R(st.x-190,440,56,38,'#e0b885'));
     $('#runLoad').classList.add('on');$('#rlFill').style.width=CONTENT.runLoading+'%';
     const t0=performance.now(),my=token;const f=now=>{if(my!==token)return;const t=Math.min(1,(now-t0)/2600);$('#rlPct').textContent=Math.round(t*CONTENT.runLoading)+'%';if(t<1)requestAnimationFrame(f);};requestAnimationFrame(f);}
 }
-function enterContinent(){
+let bookPage=0;
+function pageL(k){const p=CONTENT.runStops[0].pages[k];return `<div class="emo">${p[0]}</div><div class="pn">PAGE ${k+1} / ${CONTENT.runStops[0].pages.length}</div>`;}
+function pageR(k){return `<div class="lab">${CONTENT.runStops[0].pages[k][1]}</div><div class="ln"></div><div class="ln"></div><div class="ln"></div>`;}
+async function flipBook(){
+  const b=$('#book'),lf=b.querySelector('.leaf'),k=bookPage;bookPage++;
+  lf.classList.remove('turn');lf.style.display='block';lf.querySelector('.fr').innerHTML=pageR(k);lf.querySelector('.bk').innerHTML=pageL(k+1);
+  b.querySelector('.pgR').innerHTML=pageR(k+1);lf.offsetHeight;lf.classList.add('turn');
+  await wait(780);b.querySelector('.pgL').innerHTML=pageL(k+1);lf.style.display='none';lf.classList.remove('turn');
+}
+function enterContinent(){$('#book').classList.remove('on');
   rStep=0;camX=0;applyCam();$('#evt').innerHTML='';$('#runCap').classList.remove('on');$('#runLoad').classList.remove('on');$('#rlFill').style.width='0';$('#rlPct').textContent='0%';
   $('#dawn').style.opacity=0;$('#runStart').style.opacity=1;$('#hammer').classList.remove('swing');
   buildContinent();applyCam();setNotes('講稿｜未知大陸',CONTENT.continentNotes[0]);
 }
 async function continentNext(){
+  if(rStep===1&&bookPage<CONTENT.runStops[0].pages.length-1){await flipBook();return true;}
+  $('#book').classList.remove('on');
   if(rStep>=CONTENT.runStops.length)return false;
   const i=rStep,st=CONTENT.runStops[i];rStep++;
   $('#runStart').style.opacity=0;$('#runCap').classList.remove('on');
@@ -847,11 +894,12 @@ function buildTavern(){
   const tbl=x=>R(x,610,180,16,'#8a5a3b')+R(x+20,626,14,60,'#6b3f22')+R(x+146,626,14,60,'#6b3f22')+R(x+40,586,22,24,'#d9a441')+R(x+110,586,22,24,'#d9a441');
   s+=tbl(60)+tbl(1040);
   $('#tvBg').innerHTML=s;$('#tvPort').innerHTML=heroSVG(4);$('#tvHero').innerHTML=heroSVG(5);
-  $$('.ybtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();selYes(+b.dataset.i);confirmYes();}));
+  $$('.ybtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();if(+b.dataset.i===0)noFly();else{selYes(1);confirmYes();}}));
 }
+function noFly(){if(tvStep>=1)return;tvStep=1;$$('.ybtn')[0].classList.add('fly');selYes(1);}
 function selYes(i){$$('.ybtn').forEach((b,k)=>b.classList.toggle('sel',k===i));}
 async function enterTavern(){
-  tvStep=0;$('#tvBox').style.opacity=1;$('#tvBtns').classList.remove('on');$('#tvDone').classList.remove('on');$('#tvHero').classList.remove('on');$('#confBox').innerHTML='';selYes(0);
+  tvStep=0;$('#tvBox').style.opacity=1;$('#tvBtns').classList.remove('on');$('#tvDone').classList.remove('on');$('#tvHero').classList.remove('on');$('#confBox').innerHTML='';$$('.ybtn').forEach(b=>b.classList.remove('fly'));selYes(0);
   await wait(400);await type($('#tvQ'),CONTENT.tavernQ,60);$('#tvBtns').classList.add('on');
 }
 async function confirmYes(){
@@ -862,7 +910,7 @@ async function confirmYes(){
   await wait(300);$('#tvDone').classList.add('on');$('#tvHero').classList.add('on');
 }
 async function tavernNext(){
-  if(tvStep===0){selYes(1);tvStep=1;return true;}
+  if(tvStep===0){noFly();return true;}
   if(tvStep===1){await confirmYes();return true;}
   return true;
 }
@@ -873,13 +921,12 @@ async function tavernNext(){
 let iStep=0;
 function buildIsland(){$('#pScr').innerHTML=CONTENT.island.map((s,i)=>`<img src="img/${s[0]}" alt="${s[1]}" class="${i?'hide':''}">`).join('');}
 function setShot(k){$$('#pScr img').forEach((im,i)=>im.classList.toggle('hide',i!==k));const s=CONTENT.island[k];$('#iCap').innerHTML=`<small>SCREEN ${k+1} / ${CONTENT.island.length}</small>${s[1]}｜${s[2]}`;}
-function enterIsland(){iStep=0;$('#laptop').classList.remove('gone');$('#oldLabel').style.opacity=1;$('#stamp').className='';$('#phone').classList.remove('on');$('#iPanel').classList.remove('on');$('#optim').classList.remove('on');setShot(0);setNotes('講稿｜共同成長小島',CONTENT.islandNotes[0]);}
+function enterIsland(){iStep=0;$('#laptop').classList.remove('gone');$('#oldLabel').style.opacity=1;$('#phone').classList.remove('on');$('#iPanel').classList.remove('on');$('#optim').classList.remove('on');setShot(0);setNotes('講稿｜共同成長小島',CONTENT.islandNotes[0]);}
 async function islandNext(){
   const N=CONTENT.island.length;
-  if(iStep===0){$('#stamp').classList.add('on');}
-  else if(iStep===1){$('#stamp').classList.add('gone');$('#laptop').classList.add('gone');$('#oldLabel').style.opacity=0;await wait(500);$('#phone').classList.add('on');$('#iPanel').classList.add('on');setShot(0);}
-  else if(iStep<N+1){setShot(iStep-1);}
-  else if(iStep===N+1){$('#optim').classList.add('on');}
+  if(iStep===0){$('#laptop').classList.add('gone');$('#oldLabel').style.opacity=0;await wait(500);$('#phone').classList.add('on');$('#iPanel').classList.add('on');setShot(0);}
+  else if(iStep<N){setShot(iStep);}
+  else if(iStep===N){$('#optim').classList.add('on');}
   else return false;
   iStep++;setNotes('講稿｜共同成長小島',CONTENT.islandNotes[Math.min(iStep,CONTENT.islandNotes.length-1)]);return true;
 }
@@ -937,7 +984,6 @@ setTimeout(()=>$('#help').style.opacity=.7,4000);
 
 $$('.bg-day').forEach(b=>b.outerHTML=daySVG());
 $$('.bg-night,.bg-sky').forEach(b=>b.outerHTML=nightSVG());
-$('#startHero').innerHTML=heroSVG(5);
 buildMap();buildVillage();buildBattle();buildContinent();buildIsland();buildTavern();
 go(0);
 </script>
